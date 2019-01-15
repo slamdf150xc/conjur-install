@@ -76,7 +76,7 @@ start_conjur () {
 
 conjur_createacct () {
     # Configure Conjur & create account
-    CONJUR_INFO=$(sudo docker exec -it unixadmin_conjur_1 conjurctl account create quick-start)
+    CONJUR_INFO="$(sudo docker exec -it unixadmin_conjur_1 conjurctl account create quick-start)"
     export CONJUR_INFO="${CONJUR_INFO}"
 }
 
