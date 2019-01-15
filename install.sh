@@ -57,12 +57,12 @@ install_dockercompose () {
 download_conjur () {
     # Download Conjur & pull Docker Images necessary
     sudo curl -o docker-compose.yml https://www.conjur.org/get-started/docker-compose.quickstart.yml
-    docker-compose pull
+    sudo docker-compose pull
 }
 
 generate_masterkey () {
     # Generate a secure master key for Conjur
-    docker-compose run --no-deps --rm conjur data-key generate > data_key
+    sudo docker-compose run --no-deps --rm conjur data-key generate > data_key
     DATA_KEY="$(< data_key)"
     export CONJUR_DATA_KEY="${DATA_KEY}"
     rm -rf data_key
@@ -70,7 +70,7 @@ generate_masterkey () {
 
 start_conjur () {
     # Spin up Docker containers for Conjur
-    docker-compose up -d
+    sudo docker-compose up -d
     rm -rf docker-compose.yml
 }
 
@@ -84,12 +84,12 @@ conjur_init () {
     # Initialize Conjur
     API_KEY=$(echo "${CONJUR_INFO}" | awk 'FNR == 11 {print $5}')
     export CONJUR_API_KEY="${API_KEY}"
-    docker exec -it conjur-install_client_1 conjur init -u conjur -a quick-start 
+    sudo docker exec -it conjur-install_client_1 conjur init -u conjur -a quick-start 
 }
 
 conjur_authn () {
     # Login to Conjur from CLI (Client) container for Admin user
-    docker exec -it conjur-install_client_1 conjur authn login -u admin -p "${CONJUR_API_KEY}"
+    sudo docker exec -it conjur-install_client_1 conjur authn login -u admin -p "${CONJUR_API_KEY}"
 }
 
 report_info () {
