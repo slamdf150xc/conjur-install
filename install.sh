@@ -76,7 +76,7 @@ start_conjur () {
 
 conjur_createacct () {
     # Configure Conjur & create account
-    CONJUR_INFO=$(docker exec -it conjur-install_conjur_1 conjurctl account create quick-start)
+    CONJUR_INFO=$(docker exec -it unixadmin_conjur_1 conjurctl account create quick-start)
     export CONJUR_INFO="${CONJUR_INFO}"
 }
 
@@ -84,12 +84,12 @@ conjur_init () {
     # Initialize Conjur
     API_KEY=$(echo "${CONJUR_INFO}" | awk 'FNR == 11 {print $5}')
     export CONJUR_API_KEY="${API_KEY}"
-    sudo docker exec -it conjur-install_client_1 conjur init -u conjur -a quick-start 
+    sudo docker exec -it unixadmin_client_1 conjur init -u conjur -a quick-start 
 }
 
 conjur_authn () {
     # Login to Conjur from CLI (Client) container for Admin user
-    sudo docker exec -it conjur-install_client_1 conjur authn login -u admin -p "${CONJUR_API_KEY}"
+    sudo docker exec -it unixadmin_client_1 conjur authn login -u admin -p "${CONJUR_API_KEY}"
 }
 
 report_info () {
